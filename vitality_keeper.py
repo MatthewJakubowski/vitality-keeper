@@ -1,0 +1,151 @@
+"""
+██╗   ██╗██╗████████╗ █████╗ ██╗     ██╗████████╗██╗   ██╗
+██║   ██║██║╚══██╔══╝██╔══██╗██║     ██║╚══██╔══╝╚██╗ ██╔╝
+██║   ██║██║   ██║   ███████║██║     ██║   ██║    ╚████╔╝ 
+╚██╗ ██╔╝██║   ██║   ██╔══██║██║     ██║   ██║     ╚██╔╝  
+ ╚████╔╝ ██║   ██║   ██║  ██║███████╗██║   ██║      ██║   
+  ╚═══╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
+                                                          
+KEEPER PROTOCOL v1.0 (Enterprise Edition)
+----------------------------------------------------------
+COPYRIGHT (c) 2026 MATTHEW JAKUBOWSKI TRINITY CORE
+LICENSE: MIT (Open Source)
+ARCHITECTURE: Object-Oriented / Bio-Driven
+PLATFORM: Samsung DeX / Mobile Native
+----------------------------------------------------------
+"""
+
+import datetime
+import time
+import sys
+import os
+
+class BioSystem:
+    """
+    Core Logic Class.
+    Represents the biological operator as a manageable system resource.
+    Acts as a 'Bio-Firewall' between human fatigue and digital environment.
+    """
+
+    def __init__(self, user_name):
+        self.user = user_name
+        self.score = 100
+        self.status = "UNKNOWN"
+        self.api_connected = False 
+        self.color_hex = "#FFFFFF"
+        print(f"🧬 SYSTEM INIT: Operator [{self.user}] detected.")
+
+    def _connect_wearable_api(self):
+        """
+        [STUB] Future Implementation for Samsung Health SDK.
+        Currently running in manual override mode.
+        """
+        # Placeholder for future API integration
+        print("   📡 API CHECK: Samsung Health Gateway... [MANUAL OVERRIDE]")
+        self.api_connected = False
+
+    def ingest_data(self):
+        """Data Ingestion Layer (Manual Input)."""
+        self._connect_wearable_api()
+        
+        print("\n--- BIO-TELEMETRY INPUT ---")
+        try:
+            self.hr = int(input("   >> Heart Rate (BPM): "))
+            self.sleep = float(input("   >> Sleep Duration (h): "))
+            self.stress = int(input("   >> Stress Level (1-10): "))
+        except ValueError:
+            print("❌ CRITICAL ERROR: Data corruption. Numbers required.")
+            sys.exit(1)
+
+    def run_diagnostics(self):
+        """Calculates Bio-Capacity Score based on physiological penalties."""
+        print("   ...Running Algorithm...")
+        time.sleep(1) # Simulation of processing
+        
+        # Penalty Logic (Based on Lab Standards)
+        if self.hr > 85: self.score -= 25      # Cortisol Spike
+        if self.sleep < 6.0: self.score -= 40  # Regeneration Failure
+        if self.stress > 6: self.score -= 20   # Cognitive Load
+            
+        self.score = max(0, self.score)
+
+    def enforce_policy(self):
+        """Determines access rights (Logic Gate)."""
+        if self.score >= 75:
+            self.status = "GOD_MODE"
+            self.color_hex = "#4CAF50" # Green
+            return "AUTHORIZED for Deep Work."
+        elif self.score >= 40:
+            self.status = "RESTRICTED"
+            self.color_hex = "#FFC107" # Yellow
+            return "LIMITED ACCESS. Maintenance tasks only."
+        else:
+            self.status = "LOCKED"
+            self.color_hex = "#F44336" # Red
+            return "DENIED. Initiate Recovery Protocol."
+
+    def generate_html_report(self):
+        """
+        Generates a visual dashboard (dashboard.html).
+        Provides a visual proof of state for the operator.
+        """
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>VITALITY KEEPER - {self.status}</title>
+            <style>
+                body {{ background: #121212; color: #fff; font-family: monospace; text-align: center; padding: 40px; }}
+                .box {{ border: 2px solid {self.color_hex}; padding: 20px; max-width: 500px; margin: auto; border-radius: 10px; }}
+                h1 {{ color: {self.color_hex}; font-size: 60px; margin: 10px 0; }}
+                .stat {{ font-size: 20px; color: #888; }}
+                .footer {{ margin-top: 20px; font-size: 12px; color: #444; }}
+            </style>
+        </head>
+        <body>
+            <div class="box">
+                <div class="stat">OPERATOR: {self.user}</div>
+                <h1>{self.score}%</h1>
+                <div class="stat">STATUS: {self.status}</div>
+                <hr style="border-color: #333">
+                <p>Heart: {self.hr} BPM | Sleep: {self.sleep}h | Stress: {self.stress}/10</p>
+                <div class="footer">GENERATED BY VITALITY KEEPER PROTOCOL</div>
+            </div>
+        </body>
+        </html>
+        """
+        try:
+            with open("dashboard.html", "w", encoding="utf-8") as f:
+                f.write(html)
+            print("📊 VISUALIZATION: Dashboard generated -> 'dashboard.html'")
+        except Exception:
+            print("⚠️ WARNING: Could not generate HTML report.")
+
+    def log_audit(self):
+        """Persistence Layer - Saving the truth."""
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        entry = f"[{timestamp}] {self.user} | SCORE: {self.score} | {self.status}\n"
+        with open("vitality_audit.log", "a", encoding="utf-8") as f:
+            f.write(entry)
+        print("💾 DATABASE: Session audited locally.")
+
+# --- MAIN EXECUTION ---
+if __name__ == "__main__":
+    # Instantiation of the BioSystem
+    system = BioSystem("MATEUSZ_TRINITY")
+    
+    # The Pipeline
+    system.ingest_data()
+    system.run_diagnostics()
+    action = system.enforce_policy()
+    
+    # CLI Output
+    print("\n" + "="*30)
+    print(f"   STATUS: {system.status}")
+    print(f"   CAPACITY: {system.score}%")
+    print(f"   PROTOCOL: {action}")
+    print("="*30 + "\n")
+    
+    # Outputs
+    system.generate_html_report()
+    system.log_audit()
