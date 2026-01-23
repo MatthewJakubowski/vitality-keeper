@@ -1,0 +1,16 @@
+# --- VITALITY KEEPER SECURITY PROTOCOL ---
+
+# 1. SENSITIVE DATA (Bio-Telemetry & Logs)
+# Prevents leakage of personal health data & audit trails
+vitality_log.txt
+vitality_audit.log
+*.log
+
+# 2. GENERATED ARTIFACTS
+# Dashboard is generated locally per session, do not sync
+dashboard.html
+
+# 3. PYTHON SYSTEM FILES
+# Standard Python cache and compiled files
+__pycache__/
+*.py[cod]
